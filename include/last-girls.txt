@@ -1,5 +1,5 @@
-Carly 1
-Elizabeth 1
-Sara 1
-Serina 1
-Tori 1
+Carly   1   6
+Elizabeth   2   8
+Sara    1   6
+Serina  1   7
+Tori    2   8
