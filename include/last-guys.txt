@@ -1,9 +1,9 @@
-Andrew  1   8
-Alex    0   8
-Brendan 1   4
-Chris   1   7
+Andrew  1   9
+Alex    0   9
+Brendan 1   5
+Chris   1   8
 Cole    1   6
-Connor  0   6
-David   1   8
-Dylan   1   7
-Nick    1   6
+Connor  1   7
+David   1   9
+Dylan   1   8
+Nick    1   7
