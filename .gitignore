@@ -1,1 +1,5 @@
 *.swp
+~/Projects/batting-order-chaos/output/girls-order.txt
+~/Projects/batting-order-chaos/output/guys-order.txt
+~/Projects/batting-order-chaos/test/output/girls-order.txt
+~/Projects/batting-order-chaos/test/output/guys-order.txt

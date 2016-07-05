@@ -2,9 +2,9 @@
 
 TODO:
 ######
-- Add flag for resetting included files
 - Use "Smart-Logic" for determining order
     -> Track top, middle, and bottom groups
+- Add "double-header" flag
 - Add history directory
 - Display history
 - Format console output strings
