@@ -1,25 +1,39 @@
 #### TODO ####
-# - Add flag for resetting included files
-# - Update ./include/last-girls.txt with GP
-# - Update ./include/last-guys.txt with GP
 # - Format console output strings
 # - Add debug flag
 
 class Player
-    @@roster_size = 0
-    @@next_batting_position = 1
+    attr_reader     :name
+    attr_reader     :gender
+    attr_accessor   :low_count
+    attr_accessor   :middle_count
+    attr_accessor   :top_count
+    attr_reader     :bottom_count
+    attr_reader     :games_played
 
-    attr_reader   :name
-    attr_reader   :gender
-    attr_accessor :bottom_count
-    attr_reader   :games_played
-
-    def initialize(name, gender, bottom_count, games_played)
-        @@roster_size += 1
+    def initialize(name, gender, low_count, middle_count, top_count, bottom_count, games_played)
         @name = name.to_sym
         @gender = gender.to_sym
+        @low_count = low_count.to_i
+        @middle_count = middle_count.to_i
+        @top_count = top_count.to_i
         @bottom_count = bottom_count.to_i
         @games_played = games_played.to_i
+        self
+    end
+
+    def inc_low_count
+        @low_count += 1
+        self
+    end
+
+    def inc_middle_count
+        @middle_count += 1
+        self
+    end
+
+    def inc_top_count
+        @high_count += 1
         self
     end
 
@@ -34,25 +48,23 @@ class Player
     end
 
     def to_string
-        output = "#{@name.to_s}\t#{@bottom_count}\t#{@games_played}\n"
+        output = "#{@name.to_s}\t#{@low_count}\t#{@middle_count}\t#{@top_count}\t#{@bottom_count}\t#{@games_played}\n"
     end
 end
 
 class Roster
-    attr_reader   :playing_roster_size      # Integer
     attr_accessor :guys_order               # Array
     attr_accessor :girls_order              # Array
     attr_accessor :full_roster              # Hash
 
     def initialize
-        @playing_roster_size = 0
         @guys_order = []
         @girls_order = []
         @full_roster = {}
     end
 
-    def add_to_roster(name, gender, bottom_count, games_played)
-        @full_roster[name] = Player.new(name, gender, bottom_count, games_played)
+    def add_to_roster(name, gender, low_count, middle_count, top_count, bottom_count, games_played)
+        @full_roster[name] = Player.new(name, gender, low_count, middle_count, top_count, bottom_count, games_played)
     end
 
     def add_to_order(name, gender)
@@ -65,7 +77,6 @@ class Roster
                 @girls_order << player.inc_games_played
                 @full_roster[name] = player
             end
-            @playing_roster_size += 1
         else
             puts "#{name} not a member of the roster"
         end
@@ -89,20 +100,38 @@ def print_player_array(array)
     output
 end
 
-def main
-    # Check for flags
-    args = Hash[ ARGV.flat_map { |s| s.scan(/--?([^=\s]+)(?:=(\S+))?/) } ]
-    puts args
+def reset_files(base_dir, roster)
+    output = ""
 
-    base_dir = ""
-    if (args.key?('t') or args.key?('test'))
-        base_dir = "test/"
+    roster.full_roster.each_pair do |name, player|
+        output += "#{name.to_s}\t0\t0\t0\t0\t0\n" if player.gender == :guy
     end
 
+    File.open(guys_bottom_file, 'w') do |file|
+        file.write(output)
+    end
+
+    puts "\nGUYS BOTTOM FILE:"
+    puts output
+
+    output = ""
+
+    roster.full_roster.each_pair do |name, player|
+        output += "#{name.to_s}\t0\t0\t0\t0\t0\n" if player.gender == :girl
+    end
+
+    puts "\nGIRLS BOTTOM FILE:"
+    puts output
+
+    File.open(girls_bottom_file, 'w') do |file|
+        file.write(output)
+    end
+end
+
+def initialize_roster(base_dir)
     guys_bottom_file = base_dir + "include/last-guys.txt"
     girls_bottom_file = base_dir + "include/last-girls.txt"
 
-    # Make new roster instance
     roster = Roster.new
 
     # Add all players to roster with bottom count and games played
@@ -110,32 +139,41 @@ def main
         temp_array = line.chop!.split
 
         name = temp_array[0].to_sym
-        bottom_count = temp_array[1]
-        games_played = temp_array[2]
+        low_count = temp_array[1]
+        middle_count = temp_array[2]
+        top_count = temp_array[3]
+        bottom_count = temp_array[4]
+        games_played = temp_array[5]
 
-        roster.add_to_roster(name, "guy", bottom_count, games_played)
+        roster.add_to_roster(name, "guy", low_count, middle_count, top_count, bottom_count, games_played)
     end
     File.open(girls_bottom_file).readlines.each do |line|
         temp_array = line.chop!.split
 
         name = temp_array[0].to_sym
-        bottom_count = temp_array[1]
-        games_played = temp_array[2]
+        low_count = temp_array[1]
+        middle_count = temp_array[2]
+        top_count = temp_array[3]
+        bottom_count = temp_array[4]
+        games_played = temp_array[5]
 
-        roster.add_to_roster(name, "girl", bottom_count, games_played)
+        roster.add_to_roster(name, "girl", low_count, middle_count, top_count, bottom_count, games_played)
     end
 
-    puts "NAME:\tBOTTOM COUNT:\tGAMES PLAYED"
+    puts "NAME:\tLOW COUNT:\tMIDDLE COUNT\tTOP COUNT\tBOTTOM COUNT:\tGAMES PLAYED"
     roster.full_roster.each_value do |player|
         puts player.to_string if (player.gender == :guy)
     end
 
-    puts "NAME:\tBOTTOM COUNT:\tGAMES PLAYED"
+    puts "NAME:\tLOW COUNT:\tMIDDLE COUNT\tTOP COUNT\tBOTTOM COUNT:\tGAMES PLAYED"
     roster.full_roster.each_value do |player|
         puts player.to_string if (player.gender == :girl)
     end
-    #puts roster.full_roster
 
+    roster
+end
+
+def build_order(base_dir, roster)
     guys_input_file = base_dir + "input/guys.txt"
     girls_input_file = base_dir + "input/girls.txt"
 
@@ -149,8 +187,10 @@ def main
             puts "Cannot find #{name} in roster."
         end
     end
-    #puts "NAME:\tBOTTOM COUNT:\tGAMES PLAYED"
+
+    #puts "NAME:\tLOW COUNT\tMIDDLE COUNT\tTOP COUNT\tBOTTOM COUNT:\tGAMES PLAYED"
     #puts print_player_array(roster.guys_order)
+
     File.open(girls_input_file).readlines.each do |line|
         name = line.chop!.to_sym
         if roster.full_roster.key?(name)
@@ -160,7 +200,8 @@ def main
             puts "Cannot find #{name} in roster."
         end
     end
-    #puts "NAME:\tBOTTOM COUNT\tGAMES_PLAYED:"
+
+    #puts "NAME:\tLOW COUNT\tMIDDLE COUNT\tTOP COUNT\tBOTTOM COUNT\tGAMES_PLAYED:"
     #puts print_player_array(roster.girls_order)
 
     # Determine all players of each gender that have been bottom least
@@ -177,7 +218,9 @@ def main
         end
         #puts "#{player.name} has been bottom #{player.bottom_count} times."
     end
+
     #puts print_player_array(guys_last)
+
     girls_min = (2 ** (0.size * 8 - 2) - 1)
     girls_last = []
     roster.girls_order.each do |player|
@@ -191,37 +234,6 @@ def main
         #puts "#{player.name} has been bottom #{player.bottom_count} times."
     end
     #puts print_player_array(girls_last)
-
-    # Reset include files to default.
-    if (args.key?('r') or args.key?('reset'))
-        output = ""
-
-        roster.full_roster.each_pair do |name, player|
-            output += "#{name.to_s}\t0\t0\n" if player.gender == :guy
-        end
-
-        File.open(guys_bottom_file, 'w') do |file|
-            file.write(output)
-        end
-
-        puts "\nGUYS BOTTOM FILE:"
-        puts output
-
-        output = ""
-
-        roster.full_roster.each_pair do |name, player|
-            output += "#{name.to_s}\t0\t0\n" if player.gender == :girl
-        end
-
-        puts "\nGIRLS BOTTOM FILE:"
-        puts output
-
-        File.open(girls_bottom_file, 'w') do |file|
-            file.write(output)
-        end
-
-        return
-    end
 
     # Randomly select one player from each list of min bottom counts
     last_guy = guys_last.sample
@@ -241,8 +253,11 @@ def main
     roster.girls_order.delete_if { |player| player == last_girl }
     roster.girls_order << last_girl
 
-    #puts print_player_array(roster.guys_order)
-    #puts print_player_array(roster.girls_order)
+    puts ""
+    puts print_player_array(roster.guys_order)
+    puts ""
+    puts print_player_array(roster.girls_order)
+    puts ""
 
     # Save each order to output file
     guys_order_file = base_dir + "output/guys-order.txt"
@@ -262,7 +277,13 @@ def main
         file.write(output)
     end
 
-    # Update "last-guys.txt" and "last-girls.txt".
+    roster
+end
+
+def update_bottom_file(base_dir, roster)
+    guys_bottom_file = base_dir + "include/last-guys.txt"
+    girls_bottom_file = base_dir + "include/last-girls.txt"
+
     output = ""
     roster.full_roster.each_value do |player|
        output += player.to_string if (player.gender == :guy)
@@ -287,6 +308,34 @@ def main
     puts "\nGIRLS BOTTOM FILE:"
     puts output
     output = ""
+end
+
+def main
+    # Check for flags.
+    args = Hash[ ARGV.flat_map { |s| s.scan(/--?([^=\s]+)(?:=(\S+))?/) } ]
+    puts args
+
+    # Use test directory files, if flag set.
+    base_dir = ""
+    if (args.key?('t') or args.key?('test'))
+        base_dir = "test/"
+    end
+
+    # Make new roster instance
+    roster = initialize_roster(base_dir)
+
+    # Reset include files to default, if flag set.
+    #   Requires roster to be initialized.
+    if (args.key?('r') or args.key?('reset'))
+        reset_files(base_dir, roster)
+        return
+    end
+
+    # Build the order and save to output file.
+    roster = build_order(base_dir, roster)
+
+    # Update "last-guys.txt" and "last-girls.txt".
+    update_bottom_file(base_dir, roster)
 
     # Print "Done!" to console
     puts "\nDone!"
