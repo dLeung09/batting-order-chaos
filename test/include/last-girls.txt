@@ -1,5 +1,5 @@
-Carly	0	0
-Elizabeth	0	0
-Sara	0	0
-Serina	0	0
-Tori	0	0
+Carly	0	0	0	0	0
+Elizabeth	0	0	0	0	0
+Sara	0	0	0	0	0
+Serina	0	0	0	0	0
+Tori	0	0	0	0	0
