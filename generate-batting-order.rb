@@ -33,7 +33,7 @@ class Player
     end
 
     def inc_top_count
-        @high_count += 1
+        @top_count += 1
         self
     end
 
@@ -53,6 +53,12 @@ class Player
 end
 
 class Roster
+    MAX_TIMES = (2 ** (0.size * 8 - 2) - 1)
+    BOT  = :bottom
+    LOW  = :low
+    MID  = :middle
+    TOP  = :top
+
     attr_accessor :guys_order               # Array
     attr_accessor :girls_order              # Array
     attr_accessor :full_roster              # Hash
@@ -101,6 +107,9 @@ def print_player_array(array)
 end
 
 def reset_files(base_dir, roster)
+    guys_bottom_file = base_dir + "include/last-guys.txt"
+    girls_bottom_file = base_dir + "include/last-girls.txt"
+
     output = ""
 
     roster.full_roster.each_pair do |name, player|
@@ -204,54 +213,22 @@ def build_order(base_dir, roster)
     #puts "NAME:\tLOW COUNT\tMIDDLE COUNT\tTOP COUNT\tBOTTOM COUNT\tGAMES_PLAYED:"
     #puts print_player_array(roster.girls_order)
 
-    # Determine all players of each gender that have been bottom least
-    #   number of times
-    guys_min = (2**(0.size * 8 - 2) - 1)
-    guys_last = []
-    roster.guys_order.each do |player|
-        if player.bottom_count < guys_min
-            guys_last.clear
-            guys_last << player
-            guys_min = player.bottom_count
-        elsif player.bottom_count == guys_min
-            guys_last << player
-        end
-        #puts "#{player.name} has been bottom #{player.bottom_count} times."
-    end
+    both_orders = {}
 
-    #puts print_player_array(guys_last)
+    both_orders = build_order_segment(roster, Roster::LOW)
+    guys_low_order = both_orders[:guy]
+    girls_low_order = both_orders[:girl]
 
-    girls_min = (2 ** (0.size * 8 - 2) - 1)
-    girls_last = []
-    roster.girls_order.each do |player|
-        if player.bottom_count < girls_min
-            girls_last.clear
-            girls_last << player
-            girls_min = player.bottom_count
-        elsif player.bottom_count == girls_min
-            girls_last << player
-        end
-        #puts "#{player.name} has been bottom #{player.bottom_count} times."
-    end
-    #puts print_player_array(girls_last)
+    both_orders = build_order_segment(roster, Roster::TOP)
+    guys_high_order = both_orders[:guy]
+    girls_high_order = both_orders[:girl]
 
-    # Randomly select one player from each list of min bottom counts
-    last_guy = guys_last.sample
-    last_guy.inc_bottom_count
-    puts "#{last_guy.name} is last guy."
-    last_girl = girls_last.sample
-    last_girl.inc_bottom_count
-    puts "#{last_girl.name} is last girl."
+    both_orders = build_order_segment(roster, Roster::MID)
+    guys_mid_order = both_orders[:guy]
+    girls_mid_order = both_orders[:girl]
 
-    # Randomize each order
-    roster.guys_order.shuffle!
-    roster.girls_order.shuffle!
-
-    # Move last of each gender to end of list
-    roster.guys_order.delete_if { |player| player == last_guy }
-    roster.guys_order << last_guy
-    roster.girls_order.delete_if { |player| player == last_girl }
-    roster.girls_order << last_girl
+    roster.guys_order = guys_high_order + guys_mid_order + guys_low_order
+    roster.girls_order = girls_high_order + girls_mid_order + girls_low_order
 
     puts ""
     puts print_player_array(roster.guys_order)
@@ -278,6 +255,155 @@ def build_order(base_dir, roster)
     end
 
     roster
+end
+
+def build_order_segment(roster, segment)
+    # TODO
+    both_orders = {}
+    if segment == Roster::LOW
+        return build_bottom_segment(roster)
+    end
+
+    [:guy, :girl].each do |gender|
+        order_segment = []
+        gender_order = []
+
+        if gender == :guy
+            gender_order = roster.guys_order
+        else
+            gender_order = roster.girls_order
+        end
+
+        gender_order = order_quicksort(gender_order, segment)
+
+        if segment == Roster::TOP
+            order_segment = gender_order.shift(3)
+        elsif segment == Roster::MID
+            order_segment = gender_order.shift(gender_order.length)
+        else
+            raise "Unexpected segment type: #{semgent}."
+        end
+
+        order_segment.each do |player|
+            if segment == Roster::TOP
+                player.inc_top_count
+            else
+                player.inc_middle_count
+            end
+        end
+
+        order_segment.shuffle!
+
+        both_orders[gender] = order_segment
+
+        if gender == :guy
+            roster.guys_order = gender_order
+        else
+            roster.girls_order = gender_order
+        end
+    end
+
+    both_orders
+end
+
+def build_bottom_segment(roster)
+    both_orders = {}
+
+    [:guy, :girl].each do |gender|
+        order_segment = []
+        order_last = []
+        gender_order = []
+
+        min = Roster::MAX_TIMES
+
+        if gender == :guy
+            gender_order = roster.guys_order
+        else
+            gender_order = roster.girls_order
+        end
+
+        gender_order.each do |player|
+            if player.bottom_count < min
+                order_last.clear
+                order_last << player
+                min = player.bottom_count
+            elsif player.bottom_count == min
+                order_last << player
+            end
+        end
+
+        last_player = order_last.sample
+        last_player.inc_bottom_count
+        last_player.inc_low_count
+        puts "#{last_player.name} is the last #{gender.to_s}."
+
+        gender_order.delete_if { |player| player == last_player }
+
+        gender_order = order_quicksort(gender_order, Roster::LOW)
+
+        order_segment = gender_order.shift(2)
+        order_segment.shuffle!
+
+        order_segment.each do |player|
+            player.inc_low_count
+            gender_order.delete_if { |play| play == player }
+        end
+
+        order_segment << last_player
+
+        if gender == :guy
+            roster.guys_order = gender_order
+        else
+            roster.girls_order = gender_order
+        end
+
+        both_orders[gender] = order_segment
+    end
+
+    return both_orders
+end
+
+def order_quicksort(array, segment)
+    return array if array.length <= 1
+    pivot = array.delete_at(rand(array.size))
+
+    left = []
+    right = []
+
+
+    array.each do |player|
+        pivot_val = Roster::MAX_TIMES
+        player_val = Roster::MAX_TIMES
+
+        if segment == Roster::BOT
+            pivot_val = pivot.bottom_count
+            player_val = player.bottom_count
+        elsif segment == Roster::LOW
+            pivot_val = pivot.low_count
+            player_val = player.low_count
+        elsif segment == Roster::MID
+            pivot_val = pivot.middle_count
+            player_val = player.middle_count
+        elsif segment == Roster::TOP
+            pivot_val = pivot.top_count
+            player_val = player.top_count
+        else
+            raise "Invalid segment type."
+        end
+
+        if player_val <= pivot_val
+            left << player
+        else
+            right << player
+        end
+    end
+
+    sorted_array = []
+    sorted_array << order_quicksort(left, segment)
+    sorted_array << pivot
+    sorted_array << order_quicksort(right, segment)
+
+    sorted_array.flatten!
 end
 
 def update_bottom_file(base_dir, roster)
