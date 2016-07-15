@@ -1,5 +1,5 @@
-Carly	0	0	0	0	0
-Elizabeth	0	0	0	0	0
-Sara	0	0	0	0	0
-Serina	0	0	0	0	0
-Tori	0	0	0	0	0
+Carly   6   0   2   3   8
+Elizab  8   0   3   2   11
+Sara    4   0   4   1   7
+Serina  5   0   3   2   8
+Tori    9   0   2   3   11
