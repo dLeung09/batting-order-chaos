@@ -50,6 +50,7 @@ class Player
     def to_string
         output = "#{@name.to_s}\t#{@low_count}\t#{@middle_count}\t#{@top_count}\t#{@bottom_count}\t#{@games_played}\n"
     end
+
 end
 
 class Roster
@@ -274,6 +275,8 @@ def build_order_segment(roster, segment)
             gender_order = roster.girls_order
         end
 
+        gender_order.shuffle!
+
         gender_order = order_quicksort(gender_order, segment)
 
         if segment == Roster::TOP
@@ -292,7 +295,7 @@ def build_order_segment(roster, segment)
             end
         end
 
-        order_segment.shuffle!
+        #order_segment.shuffle!
 
         both_orders[gender] = order_segment
 
@@ -322,6 +325,8 @@ def build_bottom_segment(roster)
             gender_order = roster.girls_order
         end
 
+        gender_order.shuffle!
+
         gender_order.each do |player|
             if player.bottom_count < min
                 order_last.clear
@@ -342,7 +347,6 @@ def build_bottom_segment(roster)
         gender_order = order_quicksort(gender_order, Roster::LOW)
 
         order_segment = gender_order.shift(2)
-        order_segment.shuffle!
 
         order_segment.each do |player|
             player.inc_low_count
@@ -379,14 +383,14 @@ def order_quicksort(array, segment)
             pivot_val = pivot.bottom_count
             player_val = player.bottom_count
         elsif segment == Roster::LOW
-            pivot_val = pivot.low_count
-            player_val = player.low_count
+            pivot_val = pivot.low_count.to_f / pivot.games_played.to_f
+            player_val = player.low_count.to_f / player.games_played.to_f
         elsif segment == Roster::MID
-            pivot_val = pivot.middle_count
-            player_val = player.middle_count
+            pivot_val = pivot.middle_count.to_f / pivot.games_played.to_f
+            player_val = player.middle_count.to_f / player.games_played.to_f
         elsif segment == Roster::TOP
-            pivot_val = pivot.top_count
-            player_val = player.top_count
+            pivot_val = pivot.top_count.to_f / pivot.games_played.to_f
+            player_val = player.top_count.to_f / player.games_played.to_f
         else
             raise "Invalid segment type."
         end
