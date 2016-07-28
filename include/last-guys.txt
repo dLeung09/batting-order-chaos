@@ -1,9 +1,9 @@
-Alex	6	1	4	2	11
-Andrew	4	2	6	1	12
+Alex	6	1	5	2	12
+Andrew	4	3	6	1	13
 Brendan	2	3	2	1	7
-Chris	4	3	4	1	11
-Cole	3	3	2	1	8
-Connor	3	2	4	1	9
-David	6	3	3	4	12
-Dylan	3	2	6	1	11
-Nick	4	1	4	2	9
+Chris	5	3	4	2	12
+Cole	3	3	3	1	9
+Connor	4	2	4	1	10
+David	6	3	4	4	13
+Dylan	4	2	6	1	12
+Nick	4	2	4	2	10
