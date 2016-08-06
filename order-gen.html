@@ -1,0 +1,109 @@
+<html>
+<head>
+    <title>Generate Batting Order</title>
+    <script>
+function action(type) {
+    var xmlhttp;
+    if (window.XMLHttpRequest)
+    {
+        // code for IE77+, Firefox, Chrome, Safari
+        xmlhttp=new XMLHttpRequest();
+    }
+    else
+    {
+        xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+    }
+    xml.open("GET", "index.html?action="+type,true);
+    xmlhttp.send();
+}
+    </script>
+    <noscript>Sorry, your browser does not support JavaScript!</noscript>
+
+    <meta charset="utf-8"/>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+    <link href='https://fonts.googleapis.com/css?family=Roboto:300,400,700' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" type="text/css" href="custom_style.css">
+</head>
+
+<body>
+    <header class="container">
+        <div class="row">
+            <h1 class="col-sm-12">
+                Order Generation
+            </h1>
+        </div>
+    </header>
+    <section class="jumbotron">
+        <div class="container">
+            <div class="row text-center">
+                Generate a random batting order!
+            </div>
+        </div>
+    </section>
+    <section class="container" id="roster_forms">
+        <div class="row">
+            <form class="col-sm-4" id="guys_form">
+                <p>Name: <input type="text"/></p>
+                <p>Name: <input type="text"/></p>
+                <p>Name: <input type="text"/></p>
+                <p>Name: <input type="text"/></p>
+                <p>Name: <input type="text"/></p>
+            </form>
+            <form class="col-sm-4" id="girls_form">
+                <p>Name: <input type="text"/></p>
+                <p>Name: <input type="text"/></p>
+                <p>Name: <input type="text"/></p>
+                <p>Name: <input type="text"/></p>
+                <p>Name: <input type="text"/></p>
+            </form>
+            <form class="col-sm-4" id="generate">
+                <p><button>Generate!</button></p>
+            </form>
+        </div>
+        <div class="row">
+            <table class="col-sm-4" id="guys_order">
+                <caption>Guys Order</caption>
+                <thead>
+                    <th>Name:</th>
+                </thead>
+                <tbody id="guys_order_body">
+                </tbody>
+            </table>
+            <table class="col-sm-4" id="guys_order">
+                <caption>Girls Order</caption>
+                <thead>
+                    <th>Name:</th>
+                </thead>
+                <tbody id="girls_order_body">
+                </tbody>
+            </table>
+        </div>
+    </section>
+    <!--
+    <footer class="container">
+        <div class="row">
+            <p class="col-sm-4">
+                &copy; 2016 David Leung
+            </p>
+            <ul class="col-sm8">
+                <li class="col-sm-1">
+                    <img src="https://s3.amazonaws.com/codecademy-content/projects/make-a-website/lesson-4/twitter.svg"/>
+                </li>
+                <li class="col-sm-1">
+                    <img src="https://s3.amazonaws.com/codecademy-content/projects/make-a-website/lesson-4/facebook.svg"/>
+                </li>
+                <li class="col-sm-1">
+                    <img src="https://s3.amazonaws.com/codecademy-content/projects/make-a-website/lesson-4/instagram.svg"/>
+                </li>
+                <li class="col-sm-1">
+                    <img src="https://s3.amazonaws.com/codecademy-content/projects/make-a-website/lesson-4/medium.svg"/>
+                </li>
+            </ul>
+        </div>
+    </footer>
+    !-->
+</body>
+
+<script src="batting-order-generation.js"></script>
+
+</html>
