@@ -124,6 +124,36 @@ var main = function()
 
     //document.getElementById("stats_table").style.display = "inline";
 
+    if (sessionStorage && sessionStorage.getItem('guys_order'))
+    {
+        var guys_order = sessionStorage.getItem('guys_order');
+        //var guys_order = JSON.parse(sessionStorage.getItem('guys_order'));
+        console.log(guys_order);
+
+        for (i = 0; i < guys_order.length; i += 1)
+        {
+            if (guys_order[i] == null)
+            {
+                continue;
+            }
+
+            console.log(guys_order[i]);
+            var player = JSON.parse(guys_order[i]).get_name;
+            document.getElementById('guys_form_' + i).value = player;
+        }
+    }
+
+    if (sessionStorage && sessionStorage.getItem('girls_order'))
+    {
+        var girls_order = JSON.parse(sessionStorage.getItem('girls_order'));
+
+        for (i = 0; i < girls_order.length; i += 1)
+        {
+            var player = girls_order[i].get_name;
+            document.getElementById('girls_form_' + i).value = player;
+        }
+    }
+
     console.log("Finished!");
 }
 
@@ -132,13 +162,16 @@ var generate_orders = function() {
 
     ["guys_form", "girls_form"].forEach(function(form_id) {
         var order_id;
+        var gender;
         if (form_id === "guys_form")
         {
             order_id = "guys_order";
+            gender = "guy";
         }
         else
         {
             order_id = "girls_order";
+            gender = "girl";
         }
 
         var new_table_body = document.createElement("tbody");
@@ -146,6 +179,7 @@ var generate_orders = function() {
         new_table_body.id = old_table_body.id;
 
         var form_children = document.getElementById(form_id).childNodes;
+        var order = [];
 
         for (i = 1; i < form_children.length; i += 2)
         {
@@ -158,16 +192,35 @@ var generate_orders = function() {
             row_element.appendChild(player_element);
 
             new_table_body.appendChild(row_element);
+
+            var player_obj = new Player(player, gender, 0, 0, 0, 0, 1);
+            console.log(player_obj.to_string());
+
+            order.push(JSON.stringify(player_obj));
         }
 
         old_table_body.parentNode.replaceChild(new_table_body, old_table_body);
 
+        sessionStorage.removeItem(order_id);
+        sessionStorage.setItem(order_id, order);
     });
 
+    console.log(JSON.parse(sessionStorage.getItem('guys_order')));
+    console.log(JSON.parse(sessionStorage.getItem('girls_order')));
     console.log("Orders should be visible.");
 }
 
+var clear_form = function() {
+    ["guys_form", "girls_form"].forEach(function(form_id) {
+        for (i = 0; i < 10; i += 1)
+        {
+            document.getElementById(form_id + "_" + i).value = "";
+        }
+    });
+}
+
 document.forms["generate"].addEventListener("submit", generate_orders);
+document.forms["clear"].addEventListener("submit", clear_form);
 
 //////////////
 // TEST:
