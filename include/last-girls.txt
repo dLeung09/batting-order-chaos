@@ -1,5 +1,5 @@
 Carly	8	0	4	3	12
-Elizab	11	0	5	4	16
-Sara	8	0	4	3	11
-Serina	9	0	4	3	13
-Tori	11	0	5	3	16
+Elizab	12	0	5	4	17
+Sara	8	0	5	3	12
+Serina	10	0	4	3	14
+Tori	12	0	5	4	17
