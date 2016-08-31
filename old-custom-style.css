@@ -1,0 +1,57 @@
+table, th, td {
+    border: 1px solid black;
+    border-collapse: collapse;
+}
+
+th, td {
+    padding: 5px;
+    text-align: left;
+}
+
+.form {
+    padding: 5px;
+    display: inline;
+}
+
+.order {
+    width: 40%;
+}
+
+#guysorder {
+    float: left;
+}
+
+#girlsorder {
+    float: right;
+}
+
+#guys_form {
+    margin-right: 2;
+}
+
+#girls_form {
+    margin-left: 2;
+    margin-right: 2;
+}
+
+#generate {
+    margin-left: 2;
+}
+
+#stats_table {
+    display: none;
+}
+
+#order_tables {
+    display: none;
+}
+
+.container {
+    display: flex;
+}
+
+.container > div {
+    flex: 1;
+}
+
+

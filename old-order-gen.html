@@ -1,0 +1,103 @@
+<html>
+<head>
+<title>Generate Batting Order</title>
+<script>
+function action(type) {
+    var xmlhttp;
+    if (window.XMLHttpRequest)
+    {
+        // code for IE77+, Firefox, Chrome, Safari
+        xmlhttp=new XMLHttpRequest();
+    }
+    else
+    {
+        xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+    }
+    xml.open("GET", "index.html?action="+type,true);
+    xmlhttp.send();
+}
+</script>
+<noscript>Sorry, your browser does not support JavaScript!</noscript>
+
+<link rel="stylesheet" type="text/css" href="custom_style.css">
+</head>
+
+<body>
+<h1>Use this program to generate a semi-random batting order!</h1>
+<br>
+<hr>
+<br>
+<div id='stats_table'>
+    <table style="width:100%" id="stats">
+        <caption>Full Roster</caption>
+        <tr>
+            <th>Name</th>
+            <th>GP</th>
+            <th>AB</th>
+            <th>R</th>
+            <th>H</th>
+            <th>BA</th>
+        </tr>
+    </table>
+</div>
+
+<br>
+<hr>
+<br>
+
+<div id='order_tables'>
+    <table class='order' id='guysorder'>
+        <caption>Guys Order</caption>
+        <tr>
+            <th>Name:</th>
+        </tr>
+    </table>
+
+    <table class='order' id='girlsorder'>
+        <caption>Girls Order</caption>
+        <tr>
+            <th>Name:</th>
+        </tr>
+    </table>
+</div>
+
+<br>
+<hr>
+<br>
+
+<div>
+    <form id='order_form'>
+        <div class='container'>
+            <div id='guys_form' class='form'>
+                <p>Name: <input type="text" /></p>
+                <p>Name: <input type="text" /></p>
+                <p>Name: <input type="text" /></p>
+                <p>Name: <input type="text" /></p>
+                <p>Name: <input type="text" /></p>
+                <p>Name: <input type="text" /></p>
+                <p>Name: <input type="text" /></p>
+                <p>Name: <input type="text" /></p>
+                <p>Name: <input type="text" /></p>
+                <p>Name: <input type="text" /></p>
+            </div>
+            <div id='girls_form' class='form'>
+                <p>Name: <input type="text" /></p>
+                <p>Name: <input type="text" /></p>
+                <p>Name: <input type="text" /></p>
+                <p>Name: <input type="text" /></p>
+                <p>Name: <input type="text" /></p>
+                <p>Name: <input type="text" /></p>
+                <p>Name: <input type="text" /></p>
+                <p>Name: <input type="text" /></p>
+                <p>Name: <input type="text" /></p>
+                <p>Name: <input type="text" /></p>
+            </div>
+            <div id='generate' class='form'>
+                <p><button>Generate!</button></p>
+            </div>
+        </div>
+    </form>
+</div>
+
+<script src="batting-order-generation.js"></script>
+</body>
