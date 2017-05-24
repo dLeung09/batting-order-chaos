@@ -1,5 +1,5 @@
-Carly	0	0	0	0	0
-Elizab	0	0	0	0	0
+Carly	0	0	1	0	1
+Elizab	1	0	0	1	1
 Sara	0	0	0	0	0
-Serina	0	0	0	0	0
-Tori	0	0	0	0	0
+Serina	1	0	0	0	1
+Tori	1	0	0	0	1
