@@ -1,9 +1,9 @@
-Alex	1	0	0	0	1
-Chris	1	0	0	1	1
-Cole	0	0	0	0	0
+Alex	2	0	0	1	2
+Chris	1	1	0	1	2
+Cole	1	0	0	0	1
 Connor	0	0	0	0	0
-David	1	0	0	0	1
-Dylan	0	0	0	0	0
-Jesse	0	0	0	0	0
-Nick	0	0	0	0	0
-Ryan	0	0	0	0	0
+David	1	1	0	0	2
+Dylan	0	0	1	0	1
+Jesse	1	0	0	0	1
+Nick	0	0	1	0	1
+Ryan	0	0	1	0	1
