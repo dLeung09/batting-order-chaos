@@ -4,6 +4,5 @@ Cole	1	0	1	0	2
 Connor	0	0	0	0	0
 David	1	1	1	0	3
 Dylan	1	0	1	1	2
-Jesse	1	0	0	0	1
 Nick	1	0	1	0	2
-Ryan	0	0	1	0	1
+Garrett 0   0   0   0   0
