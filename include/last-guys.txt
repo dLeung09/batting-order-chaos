@@ -1,8 +1,8 @@
-Alex	2	0	0	1	2
-Chris	2	1	0	1	3
-Cole	1	0	1	0	2
+Alex	2	0	1	1	3
+Chris	2	1	1	1	4
+Cole	1	0	2	0	3
 Connor	0	0	0	0	0
-David	1	1	1	0	3
-Dylan	1	0	1	1	2
-Nick	1	0	1	0	2
-Garrett 0   0   0   0   0
+David	2	1	1	0	4
+Dylan	2	0	1	1	3
+Nick	1	1	1	0	3
+Garrett	1	0	0	1	1
