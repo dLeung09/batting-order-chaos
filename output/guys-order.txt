@@ -1,8 +1,5 @@
-Nick
-Ryan
-Dylan
-Chris
-David
 Cole
-Jesse
-Alex
+David
+Nick
+Chris
+Dylan
