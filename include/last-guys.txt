@@ -1,8 +1,8 @@
-Alex	3	1	3	1	7
-Chris	5	1	4	2	10
+Alex	4	1	3	2	8
+Chris	5	1	5	2	11
 Cole	4	1	4	2	9
 Connor	0	0	0	0	0
-David	5	1	4	2	10
-Dylan	4	1	4	1	9
-Nick	4	1	4	1	9
-Garrett	4	1	2	1	7
+David	5	1	5	2	11
+Dylan	5	1	4	1	10
+Nick	5	1	4	1	10
+Garrett	4	1	3	1	8
